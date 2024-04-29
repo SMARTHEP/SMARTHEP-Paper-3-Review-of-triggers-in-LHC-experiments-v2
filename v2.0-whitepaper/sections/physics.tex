@@ -2,7 +2,10 @@
 \label{sec:RTA_physics}
 %Caterina having a first go, but students will edit further during circulation period
 
-In this section, we briefly outline the physics analyses that have been performed by ATLAS, CMS and LHCb using real-time analysis (RTA) in Run~1 and Run~2. The success of such analyses has further motivated the development and adoption of RTA techniques in Run~3 trigger systems, as summarised in Table~\ref{trigger-table}.
+In this section, we briefly outline some of the physics analyses that have been performed by ATLAS, CMS and LHCb using real-time analysis (RTA) in Run~1 and Run~2. The success of such analyses has further motivated the development and adoption of RTA techniques in Run~3 trigger systems. %, as summarised in Table~\ref{trigger-table}.
+
+% commenting out this table since it is a repetition of previous sections and it is unclear how it belongs to the physics section
+\iffalse
 
 \begin{table}[h!]
     \centering
@@ -16,7 +19,7 @@ In this section, we briefly outline the physics analyses that have been performe
         \multirow{3}{*}{\small{ATLAS}}
             & \small{ATLAS uses a hardware-based L1 trigger to reduce the overall event rate from $40$ MHz to $100$ kHz, using granular information from the calorimeters and the muon spectrometer. A software-based computing farm, the HLT, reduces the L1 output rate down to $\sim$ 1.2 kHz. The HLT makes an early rejection based on Regions of Interest information coming from the L1 decision. The second step utilises full detector reconstruction together with more detailed algorithms for the final selection.} \\ \hline
         \multirow{3}{*}{\small{CMS}}
-            & CMS employs a two-level trigger system similar to that of ATLAS. L1 decisions are made on granular information from the calorimeters and muon system. However, the CMS HLT reads out the full detector instead of Regions of Interest. The CMS HLT software farm also comprises of GPUs. CMS has a dedicated LLP trigger, enabling LLP searches in Run 3. \\ \hline
+            & CMS employs a two-level trigger system similar to that of ATLAS. L1 decisions are made on granular information from the calorimeters and muon system. However, the CMS HLT reads out the full detector instead of Regions of Interest. The CMS HLT software farm also comprises of GPUs. CMS also has a trigger dedicated to long-lived particles. \\ \hline
         \multirow{3}{*}{\small{LHCb}}
             & \small{The removal of the L0 trigger requires that HLT1 reduce the event rate by a factor of 30, achieved by the use of GPUs en masse. HLT2 performs offline-quality reconstruction and real-time calibration, with events then saved in the reduced-persistency Turbo format on which analysis can then be performed. Many analyses should receive an improved statistical sensitivity through higher trigger yields and systematic sensitivity by avoiding L0-related systematic effects.} \\
         \thickhline
@@ -24,6 +27,8 @@ In this section, we briefly outline the physics analyses that have been performe
     \caption{Summary of LHC trigger systems providing input to the real-time analysis data streams.}
     \label{trigger-table}
 \end{table}
+
+\fi
 
 % Further comment on Run 3?
 
@@ -45,4 +50,4 @@ Long-lived particles (LLPs) predicted by beyond-SM models decay far from the poi
 %\subsection{LHCb}
 
 In LHCb, real-time analysis was motivated~\cite{Gligorov:2018fuk} by the size of the LHC production cross-section of hadrons containing a charm 
-quark. Because this cross-section is so large, it is not possible to record all signal decays of charmed hadrons to permanent storage while keeping the full detector information for each event. For the same reason, these decays must be fully reconstructed and selected in real-time, requiring accurate and up-to-date detector alignment and calibration in the real-time processing to keep systematic uncertainties under control. This is particularly crucial since LHCb has a unique ability to probe CP violation in charm hadrons to the $10^{-5}$ level or better, requiring a corresponding control of systematics. For this reason, LHCb implemented the full offline-quality reconstruction, alignment, and calibration~\cite{Dujany:2015lxd, Aaij:2016rxn, Borghi:2017hfp, LHCb:2018zdd, Aaij:2019uij} of the detector within its real-time processing (specifically the software trigger) during Run~2, and adopted real-time analysis as the baseline model~\cite{LHCbCollaboration:2319756} for the majority of the collaboration's physics programme from Run~3 onwards. In Run~2, almost all analyses of charm hadrons, as well as certain searches for BSM states (most notably dark photons), were carried out using real-time analysis.
+quark. Because this cross-section is so large, it is not possible to record all signal decays of charmed hadrons to permanent storage while keeping the full detector information for each event. Therefore, these decays must be fully reconstructed and selected in real-time, requiring accurate and up-to-date detector alignment and calibration in the real-time processing to keep systematic uncertainties under control. This is particularly crucial since LHCb has a unique ability to probe CP violation in charm hadrons to the $10^{-5}$ level or better, requiring a corresponding control of systematics. For this reason, LHCb implemented the full offline-quality reconstruction, alignment, and calibration~\cite{Dujany:2015lxd, Aaij:2016rxn, Borghi:2017hfp, LHCb:2018zdd, Aaij:2019uij} of the detector within its real-time processing (specifically the software trigger) during Run~2, and adopted real-time analysis as the baseline model~\cite{LHCbCollaboration:2319756} for the majority of the collaboration's physics programme from Run~3 onwards. In Run~2, almost all analyses of charm hadrons, as well as certain searches for BSM states (most notably dark photons), were carried out using real-time analysis.
