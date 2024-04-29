@@ -1,0 +1,7 @@
+\subsection{ATLAS Trigger and data acquisition}
+
+The ATLAS trigger and data acquisition(TDAQ)\cite{ATLAS-TDR-PhaseI} system is designed to process and filter a large amount of data coming from the LHC collisions. At 40 MHz of bunch crossings, approximately 40 TB/s of data is produced that needs to be heavily reduced to $\approx$1 kHz/1 GB/s. The vast majority of the collisions in the ATLAS detector is of minimal interest to the ATLAS physics program, the job of the TDAQ is therefore to process and save only the data needed for analysis. 
+
+\subsubsection{HLT}
+
+The HLT is a software-based computing farm which processes the 100 kHz coming from the L1 trigger down to on average 1.2 kHz rate and 1.2 GB/s of throughput. The trigger first makes an early rejection based on fast trigger algorithms which are seeded by the RoI information coming from the L1 decision. The second step is then followed by a more detailed part where the algorithms are close to offline reconstruction level. The HLT computing farm consists of approximately 40000 Processing Units(PUs) that make decisions within a few hundred milliseconds\cite{ATLASTriggerRun2}.

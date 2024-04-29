@@ -1,0 +1,35 @@
+\section{HL-LHC Upgrade}
+
+
+% ATLAS+CMS to 1 level
+% LHCb timing info?
+% ALICE ???
+% Possible approaches
+% TDRs?
+
+Following the conclusion of Run~3 (expected 2025), the LHC will enter the HL-LHC operational phase (expected 2029), with the installation of many detector upgrades in the interval. Accelerator upgrades will increase the LHC instantaneous luminosity up to \SI{7.5e34}{\per\square\cm\per\second}, a factor ten increase on the design luminosity. Access to this increased luminosity will allow the experiments to collect $\mathcal{O}\left(10\right)$ times more data than was recorded during Runs~1,~2 and 3 combined. This enormous increase in sample size enables the experiments to push both the precision and intensity frontiers of research.
+
+The HL-LHC operation poses a series of challenges to the continued efficient operation of the trigger systems of the LHC experiments. For example, in ATLAS and CMS, pile-up is likely to increase to between 140 and 200~\cite{ATLAS:pileup} from an average value of 55 in Run~3. As the occupancy and complexity of each event increases, so too will the processing time required to make effective trigger decisions. %Increasing L1 and HLT trigger rates? here
+The increase in event complexity brings an associated expansion in the memory footprint/bandwidth requirements. 
+Furthermore, since QCD cross-sections scale linearly with pileup, bandwidth limitations will result in significantly reduced fractions of low-energy jet selection, in turn hindering the sensitivity of low-energy jet searches~\cite{albrecht2018hep}.
+
+In ATLAS and CMS, several improvements and innovations in both detector/hardware and software are under development targeting HL-LHC~\cite{hl-lhc}.
+
+The upgrades to the sub-detectors will facilitate improved trigger performance (e.g., MIP/HGCAL in CMS~\cite{cms2019mip, cms2017phase-hgcal}, Calo~\cite{ATLAS:ECAL, ATLAS:HCAL}/Muon~\cite{ATLAS:Muon} in ATLAS L1, HGTD~\cite{ATLAS:HGTD}/ITK~\cite{ATLAS:ITKPixel, ATLAS:ITKStrip} in ATLAS HLT), or permit previously inaccessible combinations of sub-detectors (e.g., New Tracker in CMS~\cite{collaboration2017phasecms}). Additionally, upgrades to onboard electronics (e.g., FELIX in ATLAS~\cite{ATLAS:FELIX, ATLAS:TDAQ}) will handle the increased readout requirements as well as the increased complexity of events through a higher L1 latency. Such increases in readout capacity will also be of vital importance as new/upgraded subdetectors will further increase readout requirements (e.g., HGCAL in CMS~\cite{cms2017phase-hgcal}).
+In both experiments, there is an intense focus on heterogeneous computing architectures and their application in the real-time processing of data~\cite{ATLAS:c-and-s-roadmap,bocci2020heterogeneouscms}. ASICs and FPGAs, traditionally used in the initial stages of the data pipeline, are being deployed more widely and in diverse use cases. Migration of parallelisable tasks to GPUs is projected to reduce the power consumption, computational cost and time of the present trigger menus \cite{cms-GPU-clustering}. 
+
+Current software trigger algorithms have also been subject to scrutiny and the developments here are in many cases quicker to iterate than hardware upgrades. All of the algorithmic improvements would be too numerous to list here. We include just the following examples for brevity.
+The ATLAS experiment intends to use novel GNN models to reduce resource consumption in track reconstruction~\cite{Murnane:2809518, Caillou:2815578}, to be deployed on dedicated GPU cores in the new HLT.
+In the CMS experiment the PF algorithm, described in Section~\ref{sec:Algorithms}, will be launched inside the new L1 trigger in Run~4, and a correlator trigger will make use of tracks that are read out at \SI{40}{MHz} for the first time. A pile-up mitigation algorithm (PUPPI) will be used in L1 - requiring primary vertex identification.
+
+In the HL-LHC paradigm, the use of specialized data streams based on reduced event content—Data Scouting in CMS~\cite{ardino202340cms,tomei2003cms,badaro202040cms}, TLA in ATLAS~\cite{ATLAS:TLA}, Turbo in LHCb—will be expanded.
+% NOT HAPPY WITH PREV PARA
+
+
+%CMS
+%https://cds.cern.ch/record/2714892
+%https://arxiv.org/pdf/2010.13557.pdf %CMS track in trigger
+%atlas
+%https://cds.cern.ch/record/2285584
+
+The LHCb and ALICE experiments will not make fundamental changes to their current running strategy for Run~4. Rather, major upgrades are scheduled for LS4 in preparation for Run~5 (to commence in 2035)~\cite{CERN-LHCC-2021-012, alice_loi_hl_lhc}.

@@ -1,0 +1,30 @@
+\section{Use of real-time analysis for physics results}
+\label{sec:RTA_physics}
+%Caterina having a first go, but students will edit further during circulation period
+
+In this section, we briefly outline the physics analyses that have been performed by ATLAS, CMS and LHCb using real-time analysis (RTA) in Run-1 and Run-2. 
+
+%\textbf{Note: this section has not yet been reviewed by CMS SMARTHEP participants, please point out any inaccuracies during the comments period.}
+%\subsection{CMS}
+
+%From Patin: 
+
+%Jet:
+%Run1: https://cds.cern.ch/record/1461223, https://arxiv.org/abs/1604.08907
+%Run2: https://arxiv.org/abs/1911.03761, https://arxiv.org/abs/1611.03568, https://arxiv.org/abs/1806.00843, https://arxiv.org/abs/1810.10092 
+%Muon:
+%Run2: https://arxiv.org/abs/2112.13769, https://arxiv.org/abs/1912.04776, https://cds.cern.ch/record/2851121, https://arxiv.org/abs/2305.04904
+
+The \textit{data scouting} stream in CMS has been in place since the LHC Run-1 \cite{CMS-DP-2012-022}, and its first use in searches for dijet resonances is described in Ref. \cite{CMS-PAS-EXO-11-094}. 
+RTA allows the reach of this search to be extended to resonances with masses of 600 GeV upwards, improving on the the standard data-taking analysis that would only be sensitive to resonances with masses of 1 TeV and above\footnote{Other techniques also exist beyond RTA to reach lower resonance masses, e.g. by triggering on initial state radiation or considering boosted jets that contain the resonance products.}. The same search has also been performed with the 8 and 13 TeV center-of-mass LHC datasets in Run-1 and Run-2, and described in Refs. \cite{CMS:2016ltu, CMS:2016gsl, CMS:2018mgb}, extending the Run-1 reach to 500 GeV resonance masses; a complementary search using a third jets for triggering reaches resonance masses of 350 GeV \cite{CMS:2019mcu}. ATLAS also searched for dijet resonances using the \textit{Trigger Level Analysis (TLA)} technique starting from Run-2, with sensitivity for resonances with masses as low as 450 GeV, as described in Ref. \cite{ATLAS:2018qto}. 
+
+%CD: missing dijet+ISR? 
+
+Searches for multijet resonances (new particles decaying in paired dijet and three jets each) are also using RTA, as shown in Ref. \cite{CMS:2018ikp}. RTA extends the reach of previous searches to the low mass region from 200 GeV down to 70 GeV for RPV squarks and gluinos. 
+
+CMS also uses RTA in searches for dark photons and new long-lived particles decaying into muons using Run-2 data. Refs. \cite{CMS:2019buh, CMS:2023hwl} describe searches for dark photons decaying into dimuons that uses RTA in the 11.5-45 GeV mass range and between 1.1 and 7.9 GeV (excluding the 2.6 - 4.2 GeV window) respectively. In Ref. \cite{CMS:2021sch}, RTA enables access to the new phase space of low dimuon masses and non-zero displacement that would otherwise not be covered by standard searches.
+The high event rate afforded by RTA also permitted the observation of the rare decay of the $\eta$ meson to four muons, described in Ref. \cite{CMS:2023thf}. 
+
+%\subsection{LHCb}
+
+In the LHCb context real-time analysis was motivated~\cite{Gligorov:2018fuk} by the size of the LHC production cross-section of hadrons containing a charm quark. Because this cross-section is so large, it is not possible to record all signal decays of charmed hadrons to permanent storage while keeping the full detector information for each event. For the same reason these decays must be fully reconstructed and selected in real-time, which means that the most accurate detector alignment and calibration must be used in the real-time processing to keep systematic uncertainties under control. This is particularly crucial since LHCb has a unique ability to probe $CP$ violation in charm hadrons to the $10^{-5}$ level or better, requiring a corresponding control of systematics. For this reason, LHCb implemented the full offline-quality reconstruction, alignment, and calibration~\cite{Dujany:2015lxd,Aaij:2016rxn,Borghi:2017hfp,LHCb:2018zdd,Aaij:2019uij} of the detector within its real-time processing (specifically the software trigger) during Run~2, and adopted real-time analysis as the baseline model~\cite{LHCbCollaboration:2319756} for the majority of the collaboration's physics programme from Run~3 onwards. Already during Run~2 almost all analyses of charm hadrons as well as certain searches for BSM states, most notably dark photons, were carried out using real-time analysis.

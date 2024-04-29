@@ -1,0 +1,98 @@
+\section{Introduction}
+%\color{blue}Danielle
+%\color{black}
+
+
+
+
+\subsection{Hardware and software usage in the LHC triggers}
+\color{red} \textbf{These sections may be summarized and merged into the appropriate experiment sections.}
+\color{black}
+% intro (try to explain why there are different needs)
+% see https://www.annualreviews.org/doi/10.1146/annurev-nucl-102115-044713
+
+\subsubsection{ATLAS and CMS}
+The ATLAS and the CMS experiments have a similar trigger system with a two-level structure, consisting of a Level-1 (L1) hardware-based trigger and a software based high-level trigger (HLT).
+The general hardware-software architecture did not change from Run 1 to Run 3.
+For both experiments, there were upgrades between the three LHC runs to adapt the TDAQ systems to face the increased data rates and beam energies reached by the LHC.
+
+% ATLAS
+In the trigger system of the ATLAS experiment event data are initially read out via dedicated electronics, that perform initial pulse shaping, analogue-to-digital conversion and aggregation of the signals received from on-detector sensors.
+The part of these data coming from the calorimeter and the muon systems is used by the L1 trigger, built in custom electronics, to perform a fast selection searching for signatures such as large electromagnetic energy deposits or high-$p_\mathrm{T}$ muon tracks.
+At this stage in Run 1 the overall event rate was reduced from \SI{20}{\mega\hertz} to a maximum of \SI{75}{\kilo\hertz} and the L1 decision had to reach the front-end electronics within a latency of \SI{2.5}{\micro\second} after the associated bunch-crossing \cite{PanduroVazquez:1954156}. In Run 2 and Run 3, the acceptance rate of the L1 trigger goes up to \SI{100}{\kilo\hertz}, which is the maximum detector read-out rate, starting from a bunch crossing rate of about \SI{40}{\mega\hertz}. The L1 trigger was upgraded for Run 3. During the upgrade, trigger latency was a critical parameter, as the majority of the detector front-end electronics will not be replaced before LS3. The trigger latency is now \SI{2.2}{\micro\second}.
+For each L1-accepted event, the front-end electronics read out the event data for all detectors. These data are sent first to ReadOut Drivers (RODs), to perform the initial processing and formatting, and after to the ReadOut System (ROS) to buffer the data, and finally to the HLT. The ROS is the first part of the DAQ chain to make partial use of non-custom hardware.
+To avoid the transferring of unwanted data, the event components used as part of the L1 decision are used to build regions-of-interest (RoIs) in the detector to be investigated by the HLT. These regions are based on geographical locations within the detector in which interesting signals are identified and assembled via dedicated hardware. 
+In Run 1 the HLT was formed by three processing farms: the Level-2 (L2) trigger, the event builder (EB) and the event filter (EF). These systems were all implemented on commercially available server PCs using entirely software-based selection algorithms. The data were transferred between the farms via high speed Ethernet-based networks.
+The L2 trigger processed the RoI information using software based selection algorithms, with a peak output event rate of \SI{6.5}{\kilo\hertz}. Then the data were sent to the EB farm, which requested the full readout of the selected event from the ROS and then passed the data to the final EF farm, where more complex selection algorithms were applied. Events passing this final stage were written to permanent storage. For Run 2, the L2-EF structure has been simplified and the two processing steps conceptually merged: before, L2 algorithms on a dedicated farm seeded processing in a separate EF farm, whereas now there is one common HLT farm with each node capable of performing all processing steps. The advantages are that it is no longer needed to transfer the data from one farm to another and that all the cores of the farm can process all HLT processes. This allows much more efficient resource distribution and load balancing and increases the maximum rate.
+The peak data rate recorded to disk after the HLT in Run 1 was of order \SI{1}{\kilo\hertz}, increased to an average of \SI{1.2}{\kilo\hertz} in Run 2.\\
+% still missing references:
+% \cite{ATLASMachine}
+%https://arxiv.org/abs/2007.12539, atlas run2 operations
+% https://inspirehep.net/files/61e32e7984648e8fa66ffdf84e2ae6fe
+% TDR for phase 1, 1.3 Present System and Planned Upgrades
+% https://inspirehep.net/files/0e4a1261fb1a366a088efe45ccd0b7c5
+\vspace{0.3 cm}
+
+% CMS 
+Similarly to the ATLAS, the first level (L1) of the CMS trigger is implemented in custom hardware, and selects events containing candidate objects, e.g., ionization deposits consistent with a muon, or energy clusters consistent with an electron, photon, $\rm \tau$ lepton, missing transverse energy, or jet. The L1 trigger takes input from the calorimeters and the muon system. 
+Trigger primitives are generated on the front-ends of the subdetectors and then processed in several steps before a final decision is rendered in the global trigger.
+The thresholds of the L1 trigger are adjusted during data taking based on the value of the LHC instantaneous luminosity, to restrict the output rate to the upper limit imposed by the CMS readout electronics of \SI{100}{\kilo\hertz}. The trigger latency is \SI{4}{\micro\second}.
+The L1 trigger was majorly upgraded for Run 2: all electronic boards of the system have been replaced, allowing more sophisticated algorithms to be run online; the global trigger is now able to perform complex selections and to compute high-level quantities, like invariant masses.
+For Run 3, a large effort was invested to develop new features and new trigger algorithms oriented to long-lived particle (LLP) signatures and rare signals at L1. Thanks to the upgrades of the hadronic calorimeter (HCAL), new inputs from the L1 calorimeter objects like the timing and the depth information can be exploited for physics purpose.
+Events accepted at L1 are passed to the second level (high-level trigger, HLT).
+The HLT is a streamlined version of the offline reconstruction software running on a computer farm and selects events for offline storage.
+In Run 1, the farm was formed of commodity CPUs. The HLT hardware consisted of a processor farm using commodity PCs running Scientific Linux. 
+The subunits were called builder and filter units. In the builder units, event fragments are assembled to complete events. Filter units then unpack the raw data and perform event reconstruction and trigger filtering. The average output rate was \SI{400}{\hertz}.
+For Run 2, the algorithms that run in the HLT went through big improvements. In particular, new approaches for the online track reconstruction lead to a drastic reduction of the computing time, and to much improved performance. The output rate was increased to \SI{1}{\kilo\hertz}, with a latency of few hundred milliseconds.
+For Run 3 the HLT underwent major improvements: a new tracking based on the optimized pixel track reconstruction, known as Patatrack, has been implemented. The tracking can now be offloaded to GPUs. The new HLT farm is composed of two-hundred nodes with $25600$ CPU cores and $400$ GPUs in total. Thanks to the increased usage of GPUs, the HLT algorithms can be redesigned for parallel architectures. For the start of Run 3, the calorimeter and pixel local reconstruction plus the pixel tracking have been ported to GPU and CMS is currently offloading \SI{30}{\percent} of the HLT reconstruction to GPU. The GPU reconstruction has been implemented and fully commissioned both offline and online.
+% still missing references:
+%https://arxiv.org/pdf/1609.02366.pdf run 1
+%https://pos.sissa.it/314/523/pdf run 2
+%http://cds.cern.ch/record/2842439/files/CR2022_256.pdf run 3
+
+\subsubsection{LHCb}
+% Run 1
+%https://cds.cern.ch/record/1129809/files/jinst8_08_s08005.pdf
+The detector geometry and scope of the physics program of the LHCb experiment, and thus the trigger system, are significantly different from the ATLAS and CMS ones.
+During Run 1, LHCb operated at an average levelled luminosity of $2\times10^32 \,\rm cm^{-2} s^{-1}$, that is much lower than the maximum design luminosity of the LHC.
+The effective collision rate and so the incoming data rate was about \SI{15}{\mega\hertz}. The rate of events written to storage was reduced by the trigger to about \SI{5}{\kilo\hertz}. % second ref
+The LHCb trigger system was composed by two levels: the Level-0 (L0) hardware-based and the High Level Trigger (HLT), software-based. Similarly to the ATLAS and CMS L1 triggers, the LHCb L0 trigger was implemented using custom electronics, operating synchronously with the $40 \,\rm MHz$ bunch crossing frequency, while the HLT was executed asynchronously on a processor farm, using commercially available equipment. 
+The trigger was optimised to achieve the highest efficiency for the events selected in the offline analysis, using event selections based on the masses of the rare $B$ mesons, their lifetimes and other stringent cuts to enhance the signal over background. The L0 trigger reduced the rate from \SI{40}{\mega\hertz} to \SI{1}{\mega\hertz}, with which the entire detector could be read out. A Level-0 Decision Unit (DU) collected all the information and derived the final L0 trigger decision for each bunch crossing. All L0 electronics were implemented in fully custom-designed FPGA boards which made use of parallelism and pipelining to do the necessary calculations with sufficient speed.
+The HLT consisted of a C++ application which ran on every CPU of the Event Filter Farm (EFF), which contained up to $2000$ computing nodes. The HLT reduced the event rate from \SI{1}{\mega\hertz} to \SI{2}{\kilo\hertz}, making use of the full event data. It was subdivided in two stages: the HLT1 and the HLT2. The purpose of HLT1 is to reconstruct
+particles corresponding to the Level-0 objects, with the general requirement of candidate tracks with a combination of high $p_\mathrm{T}$ and/or large impact parameter. HLT1 reduced the rate to about \SI{30}{kilo\hertz}, that is sufficiently low to allow for a full pattern recognition on the remaining events. At this rate, the HLT2 performed a combination of inclusive trigger algorithms (where the $B$ decay is reconstructed only partially), and exclusive trigger algorithms (which aim to fully reconstruct $B$-hadron final states). Selection cuts at HLT2 were relaxed compared to the offline analysis, in order to be able to study the sensitivity of the selections and to profit from refinements due to improved calibration constants. A large fraction of the output bandwidth is devoted to calibration and monitoring.
+
+% about run 1 from second reference
+% Almost all events accepted by the HLT were sent to permanent offline storage containing all raw information from the detector. The online event reconstruction, i.e. the one performed in the trigger, was simpler than the one used offline, i.e. the one performed on the LHC Computing Grid to recreate particles in the event from the raw data. This was done in order to fulfil the tight time constraints imposed in the trigger. This implied the usage of a preliminary version of the alignment and calibration and a faster, but less performing, track reconstruction and particle identification determination. The final detector calibration and alignment parameters were obtained offline on triggered data and applied afterwards during scheduled campaigns where the data were centrally re-processed. During these campaigns, all the events were re-reconstructed offline using a different version of the reconstruction software that allowed to achieve the best performance regardless of the timing required. Clearly, this strategy costs a lot of computing resources, since the reconstruction software was run twice and could also cause a loss of imperfectly reconstructed data in the trigger due to the usage of preliminary calibration and alignment.
+
+% Run 2
+%https://cds.cern.ch/record/2310660/files/epjconf_icnfp2017_01016.pdf
+Due to the change of the bunch spacing to \SI{25}{\nano\second}, in Run 2 the effective collision rate doubled compared to Run 1. This required a more efficient trigger strategy, since the extension of the offline processing resources did not scale with the increased data rate.
+To achieve this, the new trigger system was designed to allow to have the same offline-data quality already at the trigger level, which is a difficult challenge due to the time constraints imposed by the trigger. The major change to the trigger strategy that allowed to achieve this goal is that the processing of the HLT2 was completely deferred, in order to optimise the usage of the EFF. The EFF combined storage space (of about $10 \,\rm PB$ in 2016) could accommodate up to two weeks of LHCb data taking in nominal conditions. It was possible to use the time when the LHC was not in stable running, in which the farm is not busy, to process the HLT2 data. This strategy allowed to have more time to process a single event and gives the opportunity to calibrate and align the subdetectors in pseudo real-time using data from HLT1. This continuous calibration and alignment, which only updates the alignment constants when necessary, enables an offline-quality reconstruction at trigger level. This, combined with the doubling of the trigger farm capacity and the improved track reconstruction, allowed to have the same online reconstruction as the offline one and to increase the output rate to \SI{12.5}{\kilo\hertz}. 
+
+% Run 3
+% https://lhcb.github.io/starterkit-lessons/first-analysis-steps/dataflow-run3.html
+% see links to Run 1 and Run 2
+In Run 3, the instantaneous luminosity is increased by a factor of five. The L0 hardware trigger has a rate limit of \SI{1}{\mega\hertz}, which would be a limitation with this increase in luminosity.
+Such a low rate could be only achieved by having tight hardware trigger thresholds, that is particularly inefficient for fully hadronic decay modes, and a major limitation for the physics output of LHCb.
+Thus, LHCb underwent a major upgrade: during Run 3, the L0 trigger stage was completely removed, moving to a fully-software based trigger. This implied significant changes in the data processing chain of the experiment both online and offline.
+The front-end and readout electronics of all sub-detectors had to be replaced, to be able to operate at the average non-empty bunch crossing rate in LHCb of \SI{30}{\mega\hertz}.
+The software trigger is still implemented in two steps: the HLT1, which performs partial event reconstruction and simple trigger decisions based on kinematic and topological variables to reduce the data rate, and HLT2, which performs the more computationally expensive full reconstruction and completes trigger selection also exploiting particle identification information in the trigger selections. One of the most important tasks of building the events is track reconstruction, which is a parallelizable process: for this purpose, HLT1 in Run 3 is implemented as part of the Allen project and runs on GPUs. % ref to Allen
+
+\subsubsection{ALICE}
+The ALICE experiment has the prime objective of studying heavy ion interactions at LHC energies. The strong-interaction cross section in these conditions is very large, but the maximum luminosity available for ion collisions is lower than the one available for pp collisions ($10^{27} \,\rm cm^{-2}s^{-1}$ for PbPb versus $10^{34} \,\rm cm^{-2}s^{-1}$ in ATLAS and CMS for pp interactions). In addition, heavy ion interactions are characterised by very high event multiplicities. Since the physics aims and running conditions for the ALICE experiment are different from those of the other experiments at the LHC, also the trigger approach is different. 
+In Run 1, the ALICE trigger system had three levels of hardware trigger: the Level-0 (L0, with a latency of \SI{1.2}{\micro\second}), that inputs the Level-1 stage (L1, with a latency of \SI{6.5}{\micro\second}), that inputs the Level-2 stage (L2, with a latency of \SI{100}{\micro\second}).
+The Central Trigger Processor (CTP) consists of six different board types, all implemented in 6U VME, housed in a VME crate with a custom J2 backplane for transmission of trigger signals from one board to another. A seventh board type, the Local Trigger Unit (LTU), serves as the interface between the CTP and the detectors. There is one LTU per detector.
+In Run 2 this system was upgraded with the addition of the LM level (latency: \SI{800}{\nano\second}), used to provide a minimum bias-like trigger to be used to activate the TRD electronics, which are kept switched off when not required to reduce heat dissipation.
+The last step of the trigger system is, as for the other experiments, the software-based high-level trigger (HLT). The HLT consists of a PC farm of up to $1000$ multi-processor computers. The data processing is carried out by individual software components running in parallel on the nodes of the computing cluster.
+In Run 3 the rate of PbPb collisions in ALICE increased from about \SI{8}{\kilo\hertz} to \SI{50}{\kilo\hertz}. Thus the trigger system had to undergo major upgrades.
+The physics signals of interest to ALICE are in general complex to separate, and therefore not suitable to hardware triggers: this is why for Run 3, ALICE uses a continuous readout, applying a minimum bias trigger to the data stream to flag events and using sophisticated filters on fully reconstructed events. In order to do this, most but not all detectors upgraded to a continuous readout. Since not all the detectors are upgraded, the new system retains backwards compatibility.
+The CTP has a completely new hardware, advances in the processing power of FPGAs since the time when the original CTP was designed.
+
+% References
+% Run 1
+% K. Aamodt et al, The ALICE experiment at the CERN LHC, JINST 3 (2008) S08002
+% Run 2
+% B. Abelev et al., Upgrade of the Readout and Trigger System, CERN-LHCC-2013-019
+% Run 3
+% https://pos.sissa.it/313/149/pdf
+\newpage
