@@ -1,7 +1,10 @@
 \section{Processing and storage of data}
 \label{sec:data}
 
-Reconstructed detector events are typically complex data objects described by many parameters. The size of events presents a storage challenge as it can become infeasible to write all reconstructed data to storage at the output rate of the high-level trigger. To overcome this challenge, two key strategies are employed to reduce the size of the reconstructed objects. Firstly, the amount of information can be reduced, by storing only the minimal set of observables necessary to describe the process of interest. Secondly, the object information itself can be compressed, maintaining most or all of the original information while significantly reducing the size of the data being written.
+Reconstructed detector events are typically complex data objects described by many parameters. 
+% The size of events presents a storage challenge as it can become infeasible to write all raw/reconstructed data to storage at the output rate of the high-level trigger. 
+The size of events presents a storage challenge and the HLT output rate is the maximum limit at which raw and reconstructed data can be written to disk.
+To overcome this challenge, two key strategies are employed to reduce the size of the reconstructed objects. Firstly, the amount of information can be reduced, by storing only the minimal set of observables necessary to describe the process of interest. Secondly, the object information itself can be compressed, maintaining most or all of the original information while significantly reducing the size of the data being written.
 
 % Streaming
 %\subsubsection{Data scouting at ATLAS (TLA) and CMS}
