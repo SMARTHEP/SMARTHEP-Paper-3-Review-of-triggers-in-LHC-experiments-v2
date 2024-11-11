@@ -1,0 +1,20 @@
+\section{Processing and storage of data}
+\label{sec:data}
+
+Reconstructed detector events are typically complex data objects described by many parameters. 
+% The size of events presents a storage challenge as it can become infeasible to write all raw/reconstructed data to storage at the output rate of the high-level trigger. 
+The size of full events presents a storage challenge and the HLT output rate is the maximum limit at which raw and reconstructed data can be written to disk.
+To overcome this challenge, two key strategies are employed to reduce the size of the reconstructed objects. Firstly, the amount of information can be reduced, by storing only the minimal set of observables necessary to describe the process of interest. Secondly, the object information itself can be compressed, maintaining most or all of the original information while significantly reducing the size of the data being written.
+
+% Streaming
+%\subsubsection{Data scouting at ATLAS (TLA) and CMS}
+An example of the first approach is the CMS data scouting stream (akin to trigger level analysis (TLA) in ATLAS~\cite{ATLAS:TLA} and Turbo stream in LHCb~\cite{Aaij:2019uij}), wherein events are stored at higher rates with smaller event content - storing simply the online objects, bypassing offline reconstruction entirely~\cite{ardino202340cms,tomei2020cms,badaro202040cms}. 
+In addition, a parking stream or delayed stream saves event data without running offline reconstruction algorithms, with the intent of processing said events during shutdown periods when computing resources are less constrained. 
+CMS monitoring and calibration streams are also able to make use of their small event size to store more events, with typical calibration stream event sizes in 2022 and early 2023 data-taking of $\SI{13}{\kilo\byte}$, in comparison to an event with full detector readout at around \SI{1}{\mega\byte}~\cite{CMS:run3-detector}. However, the additional information of the latter event model allows a wide range of track reconstruction algorithms to be applied for the identification of $b$-jets, lepton isolation and the mitigation of pile-up vertices~\cite{tosi2016trackingcms}. 
+
+%\subsubsection{The LHCb Turbo model}
+In the LHCb Turbo model, only the objects relevant to an HLT2 trigger decision are persisted and saved to a dedicated stream~\cite{Aaij:2016rxn}.
+The reduced event size thus allows to record event at a higher rate. Many trigger-level objects may be required which are beyond the standard objects of a given decay, for example for flavour tagging. 
+In such cases, selective persistency is applied, whereby an event is saved in the Turbo model with specified additional information, e.g., other tracks arising from a primary vertex, objects contained in a cone around the candidate, etc., A calibration stream (TurCaL) is a special use case of the selective persistence model, wherein only events dedicated to detector alignment and calibration are persisted~\cite{Aaij:2019uij}.
+
+A similar approach is taken in ATLAS with the Partial Event Building (PEB) stream of events containing only partial detector information~\cite{ATLASTriggerRun3}. These reduced-size events enable dedicated higher-rate triggers to be run in the PEB stream, such as calibration and jet triggers.

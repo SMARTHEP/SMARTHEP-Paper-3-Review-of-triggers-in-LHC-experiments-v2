@@ -1,0 +1,59 @@
+\section{Reconstruction of physics objects in the higher-level triggers}
+
+The reconstruction of events from detector information is a key function of any trigger system; trigger selections typically involve imposing conditions on reconstructed objects including particle tracks and calorimeter clusters. 
+
+In the following, we will focus on examples of reconstruction tasks that are performed \textit{online} within the trigger system of different experiments. 
+We denote with \textit{offline} reconstruction tasks those that are performed on objects in events selected by the trigger system at a later stage.  
+
+The complexity and performance requirements of online reconstruction methods can range from fast, lower-level algorithms to full, offline-quality reconstruction of entire events and is determined by the requirements of the given trigger stage. 
+It is important for online algorithms to be aligned with (ideally identical to) offline algorithms in terms of inputs, implementation and performance, so that there is a good match between physics objects that inform the event selection and physics objects used for analysis. 
+This is also crucial for real-time physics analysis, as discussed in Section \ref{sec:RTA_physics}. 
+
+We refer to Refs.~\cite{alice-upgrade, ATLASTriggerRun3, CMS:run3-detector, LHCb:upgrade_trigger_TDR} for a full description of the algorithms used by the different experiments.
+
+\subsection{The LHCb online tracking algorithms}
+
+In this section we describe the LHCb track reconstruction procedure as an example of the processes involved in reconstructing event objects such as tracks. Similar processes take place in the reconstruction chains of the other LHC experiments with variations due to the specific detector architecture.
+% The LHCb reconstruction procedure provides a clear example of the processes involved in reconstructing events and event objects. 
+
+In HLT1, information from the three tracking detectors—Vertex Locator (VELO)~\cite{LHCb:velo-tdr}, Upstream Tracker (UT) and Scintillating Fibre (SciFi) Tracker~\cite{LHCb:tracker-tdr} are used to reconstruct partial event objects (e.g., particle tracks) in the dedicated CUDA-based software framework Allen~\cite{LHCb_Allen_GPU}. 
+%\todo[inline]{Need to define partial event reconstruction}
+For each sub-detector, many of the following processes must be performed: decoding of input into the global coordinate system; clustering of hits within a detection plane; combination of hits/clusters from different detection layers to form particle trajectories; fitting of track model to track candidates; vertex-finding between tracks.
+
+For the VELO, reconstruction begins with the clustering of hits on each silicon plane, with a bitmask-based clustering algorithm operating in parallel across the local regions of each cluster. Straight-line tracks are then reconstructed, starting with seeds of three hits from consecutive silicon planes, extended to the remaining layers and fit with a simple Kalman filter~\cite{kalman-track}. 
+Finally, primary vertex (PV) candidates are identified and matched to the tracks. Rather than mapping tracks one-to-one with PV candidates, each track receives a per-candidate weight (corresponding to the likelihood it is associated to each PV candidate) to enable parallel computation. 
+
+UT hits are instead assigned to extrapolated VELO tracks using a minimum momentum cut-off, with the track momentum calculated from the curvature between the straight-line VELO tracks and UT hits. 
+
+Tracks passing the VELO and UT are extrapolated to create a search window in the SciFi, where seeds of three hits in different layers are formed. A $\chi^2$ fit is performed on the seeds, and the best seeds are extrapolated to the remainder of the SciFi layers. Since the discrimination power of the three initial hits is limited, several seeds are extrapolated for each UT track, performing additional fits to select the best track per UT track. Hits in the muon systems are matched to extrapolated SciFi tracks according to the track parameters obtained in the previous steps~\cite{LHCb:2023hlw, LHCb_Allen_GPU}.
+
+These algorithms are applied per-track in parallel on the GPUs in the event-building servers. The high-throughput provided by this mass-parallelisation thus enables HLT1 to perform reconstruction of tracks at the full readout rate of \SI{30}{\mega\hertz}~\cite{LHCb_Allen_GPU}.
+
+
+% \todo[inline]{Not sure how the paragraph below fits in here, consider removing?}
+% Another class of algorithms that is widely used at LHC experiments is Kalman filters (KFs). KFs are recursive algorithms used for state estimation and data fusion (i.e., combination of information from multiple sensors), with a well-established position as a key reconstruction tool~\cite{kalman-track}, and are particularly well-suited for problems involving dynamic (i.e.,  time-dependent) systems and noisy measurements. KFs combine information from previous state estimates and new measurements to provide an optimal estimate of the current state, taking into account both the dynamics of the system and the uncertainties associated with each measurement~\cite{FRUHWIRTH1987444}. KFs are employed across the major LHC experiments for the tracking of charged particles~\cite{Belikov:2003yr,ATLAS:tracking,CMS:tracking,LHCb_Allen_GPU}
+
+\subsection{The CMS Particle Flow algorithm} \label{sec:Algorithms_PFlow}
+
+An ever-increasing collection of algorithms for reconstruction of events and constituent objects are developed and adopted by collider physics experiments. 
+One example is Particle Flow (PF)~\cite{sirunyan2017pflowcms} that combines measurements from the various sub-detectors in the ATLAS and CMS sub-detectors to produce particle candidates from the entire event. The general PF process can be briefly summarised as follows: the full detector output is used to describe the global collision event, identifying several basic elements individually and iteratively clustering them together into more complex composite physics objects~\cite{CMS:2020uim,CMS:2018rym,CMS:2014pgm}. 
+These basic elements are used to build electrons, muons, tau leptons, photons, jets, missing transverse momentum and other physics objects~\cite{CMS:2018jrd,CMS:2016lmd,CMS:2019ctu}. 
+The physics performance is ameliorated by the combination of measurements from the different sub-detectors which achieve optimal accuracy in different regions of phase space. 
+For example, the best momentum resolution is attained at low transverse momenta in the inner detector tracker and at high transverse momenta in the calorimeter. The composition of the tracks and calorimeter clusters (particle flow objects (PFOs)) are used in jet reconstruction to produce particle flow jets.
+
+The PF procedure is widely-used in CMS reconstruction in both the trigger and offline analyses. The CMS detector design is well-suited to the use of PF reconstruction: a highly-segmented tracker, fine-grained electromagnetic calorimeter, hermetic hadron calorimeter, strong magnetic field and excellent muon spectrometer provide full, high quality coverage~\cite{sirunyan2017pflowcms}. The ATLAS experiment has expanded its usage of PF in the trigger for Run 3 to include hadronic jet reconstruction. The improvement in resolution is less pronounced in ATLAS due to the good energy resolution of the calorimeters and jets produced using only calorimeter clusters, however there is significant improvement in the rejection of jets from collisions occurring in addition to the collision of interest within the same detector sensitivity window (pile-up)~\cite{ATLASTriggerRun3,ATLASJetPFlow}. 
+
+% a widely-used reconstruction procedure in CMS offline analyses, now considered the ``baseline" for object reconstruction in the CMS HLT. The purpose of the PF algorithm is to reconstruct and identify all particles involved in a collision by combining and correlating information from all sub-detectors. The CMS detector design is well-suited to the use of PF reconstruction: a highly-segmented tracker, fine-grained electromagnetic calorimeter, hermetic hadron calorimeter, strong magnetic field and excellent muon spectrometer provide full, high quality coverage~\cite{sirunyan2017pflowcms}. The ATLAS experiment implements PF algorithms offline and partly online. The ATLAS detector gains less from the approach due to its excellent energy resolution in the calorimeters but for low-momentum resolution and pile-up rejection the improvement is substantial~\cite{ATLASTriggerRun3,ATLASJetPFlow}.
+
+\subsection{ML jet and $b-$jet identification algorithms in ATLAS} \label{sec:Algorithms_bTag}
+
+More recently, machine-learning-based algorithms have emerged as options for fast reconstruction. In particular, Graph Neural Networks (GNNs), a class of machine learning models designed to operate on graph-structured data, have seen increasing adoption across the LHC experiments. For example, GNNs are used in the ATLAS Run~3 $b$-jet trigger, where tracks of common vertices are grouped and predictions around jet origin are made~\cite{ATLASTriggerRun3}. 
+
+GNNs propagate information through the nodes and edges of a graph, capturing complex relationships and dependencies within the data. GNNs can learn to perform various tasks, such as node classification, link prediction, and graph classification, for example the cluster of hits and reconstuction of showers in the LHCb calorimeter systems~\cite{canudas2022graph}.
+
+\subsection{TPC cluster finding in ALICE}
+
+Online TPC cluster and track finding algorithms are amongst the most computationally intensive processes of the ALICE TPC, as described in Ref.~\cite{alice-rta-trigger}.
+Both algorithms can be designed to be highly-parallisable and hence portable to heterogeneous architectures.
+For example, the TPC cluster finding algorithm which consists of three stages: signal extraction/calibration, identification/center of gravity calculation of neighbouring signals, and merging of neighbouring clusters between TPC readout rows.
+Since each stage consists of small operations with low memory requirements, this algorithm is ideally suited to run on FPGAs~\cite{alice:fpga}.

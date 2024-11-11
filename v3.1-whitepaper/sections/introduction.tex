@@ -1,0 +1,51 @@
+\section{Introduction}
+
+%Intro
+
+The Large Hadron Collider (LHC) was designed to operate at the highest possible energy and luminosity~\cite{CERN:lhc-design-report} to enable precise measurements of the fundamental components of matter and their interaction, and to seek new physics phenomena. 
+In the latest LHC data-taking period, Run 3, protons are accelerated to an energy of \SI{6.8}{\tera\electronvolt}, grouped into bunches in opposing beams which cross one another every \SI{25}{\nano\second}~\cite{CERN:lhc-run3-operation}. 
+Capturing the details of proton-proton ($pp$) collisions at a rate of \SI{40}{\mega\hertz} introduces an immense data challenge, in which recording collisions in full detail at a typical LHC experiment would require transferring and writing data at up to ${\sim}\SI{40}{\tera\byte\per\second}$. 
+To effectively handle this data flow, High Energy Physics (HEP) experiments employ trigger and data acquisition systems, designed to perform detector data readout, event-building, selection, etc in near-real time, reducing the throughput to a manageable level. Typically, $\mathcal{O}\left(\SI{1}{\giga\byte\per\second}\right)$ of data useful to the physics goals of an experiment is written to permanent storage.
+
+Each LHC experiment discussed in this paper — ALICE, ATLAS, CMS and LHCb — has undertaken considerable research and development in terms of triggers and data acquisition (TDAQ), and their most recent reviews can be found in Refs.~\cite{alice-performance-paper-run1, ATLASTriggerRun3, CMS:run3-detector, LHCb:upgrade_trigger_TDR}.
+
+Developments in computational resources (e.g., the adoption of hybrid architectures) and data processing approaches (e.g., real-time and parallelised software frameworks) have enabled more advanced trigger systems to be developed in recent years~\cite{GPUs-for-hep}. These trigger systems are capable of performing real-time calibration, high-level monitoring, etc. ALICE and LHCb performed significant upgrades to their trigger systems ahead of Run~3 of the LHC (2022-2025)~\cite{alice-upgrade, LHCb:2023hlw}, with ATLAS and CMS planning upgrades of similar scales ahead of the High-Luminosity LHC (HL-LHC) operational period (2029-2040s)~\cite{ATLAS:upgrade-scoping, CMS:upgrade-hllhc}.
+In this paper, the current trigger state-of-the art is reviewed, predominantly within the context of Run~3.
+
+% Overview of trigger strategies
+% Model detector, what does a non-specific trigger look like?
+\subsection{Principles of triggering in High Energy Physics}
+
+The primary function of a trigger system, as laid out in Figure~\ref{trigger-schema}, is to reduce the data rate to be processed, according to the physics priorities of the  experiment~\cite{Jeitler_2017, Smith2020, Beck_2007}. 
+The performance of a trigger system can therefore be optimised according to three quantities: high signal efficiency, high background rejection (or equivalently low background efficiency) and affordable throughput/output bandwidth. 
+Furthermore, this performance must be quantifiable (e.g., that trigger efficiencies are calculable), robust and deterministic. 
+To satisfy these requirements, triggers are typically designed in a tiered structure: a lower-level (often hardware-based) tier performing initial data reduction and coarse selection; followed by a software-based (high-level) tier performs reconstruction of physics objects upon which further selections of events is performed. 
+This is not the case for all LHC experiments: LHCb does not employ a lower-level hardware trigger in Run~3~\cite{LHCb:upgrade_trigger_TDR} and the ALICE lower-level trigger does not apply selection~\cite{alice-trigger-run3}.
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{images/trigger_schematic.pdf}
+    \caption[A sketch of a trigger system for a  HEP experiment in the current paradigm. Raw data is read out from each subdetector. A low-level (hardware) trigger is typically employed to synchronise readout and apply initial selection/compression algorithms. A high-level (software) trigger makes further selections on reconstructed objects of increasing accuracy, which are then saved for offline analysis. Alignment and calibration are often performed alongside the high-level trigger to inform the reconstruction algorithms required for detailed selections.]{A generalised schematic of a trigger system for an HEP experiment in the current paradigm. Raw data is read out from each subdetector. A lower-level (hardware) trigger is typically employed to synchronise readout and apply initial selection/compression algorithms. Low-level trigger information and detector readout/reconstructed objects are combined in an event building stage. A high-level (software) trigger makes further selections on reconstructed objects of increasing accuracy, which are then saved for offline analysis. Alignment and calibration are often performed alongside the high-level trigger to inform the reconstruction algorithms required for detailed selections.}
+    \label{trigger-schema}
+\end{figure}
+
+
+A lower-level trigger must operate at a rate sufficiently close to the collision rate, and thus must have a minimal dead time between operations. 
+The lower-level trigger operates in a staged configuration, increasing latency with each stage to enable more detailed (and thus slower) operations to be performed on the data. 
+They are often implemented in custom high-speed electronics to perform operations meeting the latency requirements. 
+The data processed by the low-level trigger, typically reduced in rate by a factor $\mathcal{O}\left(100\right)$, is then passed to the high-level trigger for more detailed processing.
+
+Higher-level triggers perform more complex and computationally intensive tasks such as event reconstruction and calibration. 
+To ensure that such tasks can be performed at the low-level trigger output rate, the high-level trigger can be separated into two tiers, with the first performing coarse reconstruction and initial selections requiring simpler reconstructed objects (e.g., tracks), and the second performing a detailed reconstruction for more complex selections. 
+High-level triggers typically are implemented in computing farm, making use of parallel computing approaches or hybrid computing architectures to efficiently perform tasks within the available computing resources.
+
+The implementations of such systems in each of the major LHC experiments are introduced in the following sections. 
+
+%It is difficult to satisfy both the high efficiencies and high background rejection physics requirements, as well as the very small trigger latency to reduce dead time. Multi-trigger systems are usually introduced. The Level-1 (L1) Trigger is a hardware trigger, comprised of custom high-speed electronics, which makes decisions based off of coarsely reconstructed subset of information from the detector. The L1 trigger renders a selection decision every bunch crossing, with high signal efficiency and comparatively lower background rejection. The data harvested from the L1 trigger is typically more than experiment infrastructure can handle for permanent storage and offline data analysis. Therefore, more sophisticated software Higher Level Triggers (HLT) are usually implemented to further reduce the rate, using full-precision and finer granularity detector information. The maximum allowable acceptance rate L1 trigger is constrained by the detector read out, the speed of at which the HLT performs the more refined selection, and the rate at which the Data AcQuisition (DAQ) system can retrieve the data for permanent storage.  
+
+%The DAQ bandwidth, which is determined by the available storage capabilities and computing power, is related to the maximum allowable trigger rate $R_{\mathrm{trigger}} ^ {max}$ as follows:
+
+\input{sections/introduction/atlas-cms}
+\input{sections/introduction/lhcb}
+\input{sections/introduction/alice}
